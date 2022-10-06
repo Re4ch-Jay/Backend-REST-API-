@@ -25,8 +25,12 @@ const getBookById = async (req, res) => {
 const postBook = async (req, res) => {
     const {title, author, genre, page} = req.body
     try {
-        const book = await Book.create({title, author, genre, page})
-        res.status(200).json(book)
+        if(!title || !author || !genre || !page){
+            res.json({message: "All fields are required"})
+        }else{
+            const book = await Book.create({title, author, genre, page})
+            res.status(200).json(book)
+        }
     } catch (error) {
         res.status(404).json({message: 'Cannot POST the book'})
         console.log(error.message)
